@@ -1,73 +1,58 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { supabase } from '../supabaseClient'
+import { useNavigate } from 'react-router-dom'
+import logitLogo from '../assets/logit-logo.png' // ← dein Logo-Pfad
 
 export default function Login() {
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState(null)
+  const [passwort, setPasswort] = useState('')
   const navigate = useNavigate()
 
-  const handleLogin = async () => {
-    setError(null)
+  const handleLogin = async (e) => {
+    e.preventDefault()
 
-    const { data: authData, error: loginError } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
-      password,
+      password: passwort,
     })
 
-    if (loginError) {
-      setError('❌ ' + loginError.message)
-      return
-    }
-
-    const user = authData.user
-    if (!user) {
-      setError('❌ Benutzer nicht gefunden')
-      return
-    }
-
-    // Benutzerrolle abrufen aus benutzer_profile
-    const { data: profile, error: profileError } = await supabase
-      .from('benutzer_profile')
-      .select('rolle')
-      .eq('id', user.id)
-      .single()
-
-    if (profileError || !profile) {
-      setError('❌ Rolle konnte nicht geladen werden')
-      return
-    }
-
-    // 🔀 Weiterleiten basierend auf Rolle
-    if (profile.rolle === 'admin') {
-      navigate('/admin')
+    if (error) {
+      alert('Login fehlgeschlagen: ' + error.message)
     } else {
       navigate('/dashboard')
     }
   }
 
   return (
-    <div style={{ maxWidth: '400px', margin: '2rem auto' }}>
-      <h2>Login</h2>
-      <input
-        type="email"
-        placeholder="E-Mail"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        style={{ width: '100%', marginBottom: '1rem' }}
+    <div style={{ maxWidth: 600, margin: 'auto', padding: '2rem' }}>
+      <img
+        src={logitLogo}
+        alt="Logit Logo"
+        style={{
+          width: '250px',
+          display: 'block',
+          margin: '0 auto 1rem auto'
+        }}
       />
-      <input
-        type="password"
-        placeholder="Passwort"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{ width: '100%', marginBottom: '1rem' }}
-      />
-      <button onClick={handleLogin} style={{ width: '100%' }}>
-        Login
-      </button>
-      {error && <p style={{ marginTop: '1rem', color: 'red' }}>{error}</p>}
+      <h2 style={{ textAlign: 'center' }}>Login</h2>
+
+      <form onSubmit={handleLogin}>
+        <input
+          type="email"
+          placeholder="E-Mail"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Passwort"
+          value={passwort}
+          onChange={(e) => setPasswort(e.target.value)}
+          required
+        />
+        <button type="submit" className="btn-primary">Login</button>
+      </form>
     </div>
   )
 }

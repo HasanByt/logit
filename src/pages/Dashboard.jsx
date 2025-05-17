@@ -1,9 +1,22 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../supabaseClient'
 import { useNavigate } from 'react-router-dom'
+import ExcelExport from '../components/ExcelExport'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
-import ExcelExport from '../components/ExcelExport'
+import logitLogo from '../assets/logit-logo.png' // ← dein Logo-Pfad
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button
+} from '@mui/material'
+import { IconButton } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import SaveIcon from '@mui/icons-material/Save'
+import LogoutIcon from '@mui/icons-material/Logout'
+
+
 
 
 export default function Dashboard() {
@@ -107,10 +120,27 @@ export default function Dashboard() {
 
   return (
     <div style={{ maxWidth: 600, margin: 'auto', padding: '2rem' }}>
-      <h2>Willkommen bei Logit!</h2>
-      <p>Angemeldet als: <strong>{benutzername}</strong></p>
-      <button onClick={handleLogout}>Logout</button>
-      <hr />
+      <div className="logout-container">
+        <Button
+          variant="outlined"
+          color="error"
+          startIcon={<LogoutIcon />}
+          onClick={handleLogout}
+        >
+          Abmelden
+        </Button>
+      </div>
+      <img
+        src={logitLogo}
+        alt="Logit Logo"
+        style={{
+          width: '250px',
+          display: 'block',
+          margin: '0 auto 1rem auto'
+        }}
+      />
+
+      <p>Hallo <strong>{benutzername}</strong></p>
 
       <Calendar
         value={selectedDate}
@@ -139,8 +169,19 @@ export default function Dashboard() {
         onChange={(e) => setStunden(e.target.value)}
         style={{ width: '100%', marginBottom: '1rem' }}
       />
-      <button onClick={handleSave}>Speichern</button>
-      <ExcelExport user={user} activeMonth={activeMonth} />
+      <div className="button-row">
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<SaveIcon />}
+          onClick={handleSave}
+        >
+          Speichern
+        </Button>
+
+        <ExcelExport user={user} activeMonth={activeMonth} />
+
+      </div>
 
       <hr />
       <h3>Gespeichert für {activeMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}</h3>
@@ -151,23 +192,43 @@ export default function Dashboard() {
         else if (tag === 0) background = '#C6D9F1' // Sonntag
 
         return (
-          <div
+          <Card
             key={e.id}
-            style={{
-              marginBottom: '0.5rem',
-              padding: '0.5rem',
-              background,
-              borderRadius: '5px'
+            sx={{
+              position: 'relative',
+              marginBottom: 2,
+              backgroundColor: background,
+              paddingTop: 2, // optional für Abstand
             }}
           >
-            <strong>{e.datum}</strong>: {e.objekt} – {e.stunden} Std.
-            <button
+            <IconButton
+              aria-label="delete"
+              size="small"
+              color="error"
               onClick={() => handleDelete(e.id)}
-              style={{ marginLeft: '1rem', background: 'salmon' }}
+              sx={{
+                position: 'absolute',
+                top: 8,
+                right: 8,
+                backgroundColor: '#fff',
+                '&:hover': {
+                  backgroundColor: '#f5f5f5'
+                }
+              }}
             >
-              Löschen
-            </button>
-          </div>
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+
+            <CardContent>
+              <Typography variant="subtitle2" color="text.secondary">
+                {e.datum}
+              </Typography>
+              <Typography variant="body1">
+                {e.objekt} – {e.stunden} Std.
+              </Typography>
+            </CardContent>
+          </Card>
+
         )
       })}
     </div>

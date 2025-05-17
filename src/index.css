@@ -1,5 +1,148 @@
-/* z.B. in App.css */
-.react-calendar__tile.highlight {
-  background: lightgreen;
-  border-radius: 50%;
+/* index.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'Helvetica Neue', sans-serif;
+  background-color: #1f2937;
+  color: #f9fafb;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+button {
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+  transform: scale(1.02);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Primär-Button: Speichern */
+.btn-primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2563eb;
+}
+
+/* Warn-Button: Löschen */
+.btn-danger {
+  background-color: #ef4444;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #dc2626;
+}
+
+/* Logo zentriert anzeigen */
+.logo {
+  width: 160px;
+  max-width: 80%;
+  margin: 1rem auto;
+  display: block;
+}
+
+/* Allgemeines Container-Styling */
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #111827;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Eingabefelder */
+input,
+select {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border: 1px solid #374151;
+  background-color: #1f2937;
+  color: #f9fafb;
+}
+
+input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+/* Kalender-Highlight für ausgewählte Tage */
+.react-calendar__tile--active {
+  background-color: #3b82f6 !important;
+  color: white !important;
+  border-radius: 8px;
+}
+
+.react-calendar {
+  border-radius: 12px;
+  overflow: hidden;
+  border: none;
+  background-color: #ffffff;
+  color: #1f2937;
+  padding: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Optional: Zellen schöner */
+.react-calendar__tile {
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.react-calendar__tile--now {
+  background: #3b82f6 !important;
+  /* Blau für Heute */
+  color: white !important;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
+  }
+}
+
+.logout-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.button-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.react-calendar__tile.highlight:not(.react-calendar__tile--active) {
+  background-color: #4ade80 !important;
+  color: white !important;
+  border-radius: 8px;
+}
+
+.react-calendar__tile--active {
+  background-color: #fca5a5 !important; /* Pastellrot */
+  color: white !important;
+  border-radius: 8px;
+}
+
+
