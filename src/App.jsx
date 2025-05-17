@@ -1,17 +1,28 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import Onboarding from './pages/Onboarding'
 
-function App() {
+import RequireAuth from './components/RequireAuth'
+
+export default function App() {
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="*" element={<Login />} /> {/* Fallback auf Login */}
+        <Route path="/onboarding" element={<Onboarding />} />
+        <Route
+          path="/dashboard"
+          element={
+            <RequireAuth>
+              <Dashboard />
+            </RequireAuth>
+          }
+        />
+
+        {/* Fallback */}
+        <Route path="*" element={<Login />} />
       </Routes>
     </Router>
   )
 }
-
-export default App
